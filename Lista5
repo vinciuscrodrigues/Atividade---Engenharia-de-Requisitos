@@ -1,0 +1,45 @@
+Questao 01: C
+A espinha dorsal de um user story map precisa focar no fluxo narrativo e nas atividades do usuario. Mapear itens como AWS, tabelas, criptografia e APIs e focar na arquitetura tecnica em vez das acoes de quem usa o produto.
+
+Questao 02: B
+Dividir o desenvolvimento separando banco de dados, front-end e integracao de API em releases diferentes caracteriza um fatiamento horizontal. Isso impede que o usuario consiga testar ou ver valor real no sistema ate que a ultima camada seja finalizada.
+
+Questao 03: C
+O MVP busca validar a hipotese com o menor esforço e custo. Permitir a selecao manual de categorias de interesse resolve a necessidade basica do usuario e testa a demanda sem precisar construir um algoritmo pesado de machine learning de inicio.
+
+Questao 04
+O erro da equipe foi esquecer o gargalo operacional e emocional do usuario mapeado no discovery, que era o trabalho manual com planilhas e o envio individual de PDFs por e-mail. Eles focaram apenas no fluxo padrao de compra e check-in.
+
+Epico: Gestão de Presença e Emissão de Certificados
+User Story 1: Como organizador da semana academica, quero que o sistema consolide a lista de presenca a partir dos check-ins realizados, para eu nao ter que cruzar planilhas manualmente no Excel.
+User Story 2: Como organizador da semana academica, quero disparar os certificados por e-mail em lote para os presentes, para evitar o envio individual de cada PDF.
+
+Questao 05
+O eixo horizontal representa a linha do tempo e a sequencia logica das acoes do usuario, lida da esquerda para a direita (espinha dorsal).
+O eixo vertical mostra a priorizacao e a profundidade de cada funcionalidade. O topo contem o estritamente necessario para a jornada funcionar (MVP), e abaixo ficam as variaçoes e melhorias.
+Essa organizacao evita a fragmentacao porque mantem a visao do todo (big picture) em cada entrega, garantindo que qualquer release tenha um fluxo completo de ponta a ponta em vez de tarefas isoladas.
+
+Questao 06
+Release 1 (MVP): Feature C (Enviar o comprovante de PIX feito por fora via WhatsApp para o organizador validar no sistema).
+Release 2: Feature A (Pagar via Pix automatico com QR Code) e Feature B (Pagar via Cartao de Credito parcelado).
+
+Justificativa: Pelo fatiamento vertical, precisamos integrar todas as camadas do sistema para permitir que o usuario complete uma transacao real o mais rapido possivel. A Feature C resolve o problema de venda de ingressos na Release 1 sem exigir o tempo e a complexidade de integracao com gateways de pagamento ou analise de credito.
+
+Questao 07
+Proposta de Walking Skeleton para a Sprint 1:
+Criar uma interface simples onde o operador digita o CPF ou le o código do ingresso em um campo de texto no navegador. A tela envia o dado para a API, que atualiza o status do ingresso no banco de dados e retorna uma confirmacao na tela.
+Isso prova que o front-end, o back-end e o banco de dados estao se comunicando ponta a ponta, adiando a complexidade do reconhecimento facial e testes de carga para etapas posteriores.
+
+Questao 08
+Focar apenas na entrega dos cartoes do Story Map gerou um output funcional (a impressao do QR code funcionava no sistema), mas ignorou o outcome (o resultado no mundo real). A equipe nao previu o contexto de uso, onde o suor dos alunos danificou o papel e inviabilizou a leitura.
+Uma tecnica para mitigar isso seria o teste de usabilidade em campo ou piloto em ambiente real. Testar o fluxo em um evento menor exporia as falhas do material antes da aplicacao em larga escala.
+
+Questao 09
+A dor original do aluno era nao saber em qual sala a palestra iria acontecer. Criar uma navegacao indoor 3D adiciona uma complexidade desnecessaria (scope creep) para um problema puramente informativo.
+
+User Story alternativa: Como participante, quero visualizar o bloco e o numero da sala destacados no meu ingresso digital para saber a localizacao exata da minha palestra sem me perder no campus.
+
+Questao 10
+Risco de valor de negocio: sem o Journey Map (As-Is), o Story Map passa a ser construido com base em suposicoes do time. O risco e desenvolver um software funcional, mas que nao atende as dores e necessidades reais do usuario no dia a dia.
+
+Risco de arquitetura: pular o estudo da jornada oculta as exceçoes, gargalos operacionais e integracoes de bastidor. Isso pode gerar uma arquitetura mal dimensionada, incapaz de suportar pontos criticos do processo do usuario ou excessivamente complexa em etapas irrelevantes.

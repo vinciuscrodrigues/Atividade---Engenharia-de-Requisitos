@@ -1,0 +1,52 @@
+Lista 01 - Discovery e Engenharia de Requisitos Ágil
+
+1. O programador pulou o primeiro diamante, especialmente a fase de Descoberta (Discover), na qual deveria investigar e compreender as necessidades reais do cliente. Ao desenvolver sem validar o contexto, criou uma solução baseada em suposições, resultando em um sistema inadequado.
+
+2. A mensagem apresenta foco no sistema porque utiliza termos técnicos que o usuário pode não compreender, como JWT e Gateway. O foco no usuário exige uma comunicação simples e empática.
+Mensagem corrigida: "Sua sessão expirou. Por segurança, entre novamente na sua conta para continuar."
+
+3. Classificação na Matriz CSD:
+1) Suposição: A opinião do diretor não comprova que os alunos preferem utilizar o celular. É necessário validar com os usuários.
+2) Certeza: A LGPD estabelece regras para o tratamento de dados pessoais, incluindo imagens identificáveis. Entretanto, a necessidade específica de consentimento deve ser verificada, pois existem outras bases legais.
+3) Dúvida: A velocidade da internet no horário informado é desconhecida e precisa ser medida por testes no local.
+
+4. A pergunta é indutiva porque sugere uma solução e influencia a resposta do entrevistado, podendo gerar requisitos baseados em opiniões direcionadas.
+Pergunta investigativa: "Como você costuma escolher um restaurante ou uma refeição no aplicativo? Quais dificuldades encontra durante essa escolha?"
+
+5. Aplicação da técnica dos 5 Porquês:
+1) Por que precisa exportar para Excel? Para analisar os resultados financeiros.
+2) Por que precisa analisar no Excel? Porque o sistema não apresenta relatórios consolidados.
+3) Por que precisa de relatórios consolidados? Para acompanhar receitas, despesas e lucros.
+4) Por que precisa acompanhar esses indicadores? Para identificar problemas e tomar decisões rapidamente.
+5) Por que não consegue fazer isso diretamente no sistema? Porque não existe um painel gerencial com indicadores atualizados.
+Causa raiz: Ausência de visualização gerencial dos dados. A solução adequada seria desenvolver um Dashboard com gráficos, indicadores e filtros, eliminando a necessidade de exportações manuais.
+
+6. Shadow IT é a utilização de ferramentas ou tecnologias não autorizadas oficialmente pela organização para executar atividades de trabalho.
+A prática revela um requisito funcional e de integração: o sistema deve permitir o envio automático de notificações aos motoristas quando um pedido estiver disponível, utilizando uma integração de mensagens ou notificações internas, com controle de acesso e rastreabilidade.
+
+7. A funcionalidade pode atender à desejabilidade, pois alguns usuários poderiam querer pedidos antecipados automaticamente. Entretanto, não atende à factibilidade técnica, já que não existe tecnologia capaz de ler pensamentos dessa maneira.
+Portanto, o requisito não deve entrar no backlog de desenvolvimento como foi solicitado. Uma alternativa viável seria utilizar IA para sugerir pedidos com base no histórico e nas preferências do usuário, após validar seu interesse.
+
+8. Segundo a Curva de Custo de Boehm, o custo de corrigir problemas tende a aumentar conforme o projeto avança. A equipe poderia ter identificado o problema do ruído durante o Discovery, realizando entrevistas e testes simples.
+Como não validou a suposição, desperdiçou dois meses de desenvolvimento e precisará investir novamente para corrigir ou substituir a solução. A validação antecipada teria reduzido significativamente os custos e o retrabalho.
+
+9. Três exemplos de Edge Cases:
+1) Pagamento recusado: O cartão não possui saldo ou apresenta erro, impedindo a liberação da bicicleta.
+2) Falha de conexão: O pagamento é aprovado, mas o aplicativo perde a conexão antes de enviar o comando de desbloqueio.
+3) Falha mecânica: O pagamento é realizado, porém a trava da bicicleta apresenta defeito e não abre.
+Esses cenários exigem tratamentos específicos, como mensagens de erro, novas tentativas e estorno automático quando necessário.
+
+10. Enfermeiros de pronto-socorro necessitam de uma forma rápida e segura de acessar o sistema e registrar os sinais vitais dos pacientes porque o encerramento frequente da sessão e a digitação de senhas complexas utilizando luvas dificultam o trabalho e comprometem a continuidade dos registros.
+
+Desafio Extra - Nível PO Sênior
+
+1. Matriz CSD da ideia "Tinder para Pets":
+Certeza: O CEO deseja desenvolver uma plataforma para conectar donos de cachorros e pretende cobrar R$ 10 por match.
+Suposição 1: Os donos de animais possuem interesse em encontrar outros pets por meio de um aplicativo.
+Suposição 2: Os usuários estariam dispostos a pagar R$ 10 por cada conexão realizada.
+Dúvida técnica: Como implementar um sistema de geolocalização e compatibilidade entre perfis que permita encontros seguros entre os animais?
+
+2. Duas perguntas investigativas:
+1) "Como você costuma organizar encontros ou momentos de socialização do seu cachorro com outros animais? Quais dificuldades encontra nesse processo?"
+2) "Você já pagou por algum serviço para encontrar companhia ou atividades para seu cachorro? Como decidiu se o valor cobrado compensava?"
+Essas perguntas permitem investigar o comportamento real dos usuários e identificar se existe disposição para pagar pelo serviço, sem induzir respostas favoráveis à ideia do CEO.

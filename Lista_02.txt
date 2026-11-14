@@ -1,0 +1,85 @@
+Lista 02
+
+1. O Gherkin apresenta três erros: utiliza detalhes técnicos da interface (index.html e btn-cancelar), descreve operações internas do banco de dados e prioriza a implementação em vez do comportamento esperado pelo usuário.
+
+Cenário corrigido:
+DADO que o cliente possui uma assinatura ativa
+QUANDO solicita o cancelamento da assinatura
+ENTÃO o sistema registra o cancelamento conforme as regras contratuais
+E informa ao cliente que a solicitação foi concluída.
+
+2. Dois cenários de exceção para o caixa eletrônico:
+
+Cenário 1 – Saldo insuficiente
+DADO que o cliente possui R$ 100 de saldo disponível
+QUANDO solicita um saque de R$ 200
+ENTÃO o sistema deve recusar a operação
+E informar que o saldo é insuficiente.
+
+Cenário 2 – Notas insuficientes
+DADO que o cliente possui saldo suficiente
+E o caixa eletrônico não possui notas suficientes para realizar o saque
+QUANDO solicita a retirada do dinheiro
+ENTÃO o sistema deve recusar a operação
+E informar que não é possível realizar o saque naquele momento.
+
+3. A primeira User Story deve entregar valor imediato, priorizando um relatório financeiro simples.
+
+COMO diretor financeiro,
+QUERO visualizar um resumo mensal de receitas, despesas e saldo,
+PARA acompanhar a situação financeira da empresa e tomar decisões.
+
+O MVP deve apresentar os indicadores principais, com seleção do mês e dados atualizados, sem gráficos 3D, exportações ou envio automático de e-mails. Essa entrega pode ser planejada para duas semanas.
+
+4. A User Story falha no critério V (Valuable), pois descreve uma mudança tecnológica sem demonstrar valor direto ao negócio. Também falha nos critérios I (Independent) e N (Negotiable), porque impõe uma arquitetura específica e cria dependências com diversos componentes.
+
+O requisito deve ser tratado como uma necessidade não funcional de desempenho, estabelecendo métricas verificáveis, como tempo máximo de resposta das consultas. A equipe deve investigar os gargalos e realizar testes de desempenho antes de decidir por uma migração tecnológica.
+
+5. Identificar uma dor no ambiente físico permite descobrir oportunidades de integração entre processos presenciais e digitais.
+
+Uma solução seria implementar check-in antecipado pelo aplicativo, validação digital de documentos e liberação da retirada por QR Code ou chave digital, quando compatível com o veículo. Assim, o cliente poderia concluir as etapas burocráticas antes de chegar, reduzindo o tempo de espera no balcão.
+
+6. Aplicação dos 5 Porquês:
+
+1) Por que a tela é difícil de usar? Porque possui muitos botões e etapas manuais.
+2) Por que existem tantas etapas? Porque o contador precisa consultar e conferir informações separadamente.
+3) Por que precisa fazer essas conferências? Porque os dados fiscais não são obtidos automaticamente.
+4) Por que os dados não são obtidos automaticamente? Porque o ERP não possui integração com os serviços fiscais necessários.
+5) Por que essa integração não existe? Porque a arquitetura original não contemplou a comunicação com a API da Receita Federal.
+
+A causa raiz hipotética é a ausência dessa integração. A solução seria automatizar a consulta e validação fiscal por API, reduzindo operações manuais, desde que a investigação confirme essa causa.
+
+7. O uso do WhatsApp pessoal para compartilhar exames caracteriza Shadow IT e apresenta riscos de exposição de dados sensíveis de saúde, acesso não autorizado, armazenamento fora do controle institucional e ausência de rastreabilidade, comprometendo a conformidade com a LGPD.
+
+Épico: Implementar um módulo seguro de comunicação clínica integrado ao prontuário eletrônico, permitindo que médicos encaminhem solicitações urgentes e resultados de exames aos profissionais autorizados, com notificações em tempo real, autenticação, controle de permissões e auditoria de acessos.
+
+8. Scope Creep é o crescimento não controlado do escopo de um projeto após a definição dos requisitos.
+
+A campanha introduziu uma nova regra de negócio sem planejamento. Como o sistema suporta apenas um cupom por compra, o acúmulo pode comprometer o cálculo dos descontos, os limites financeiros, a persistência dos cupons e a consistência entre pedidos, pagamentos e registros contábeis.
+
+A solução exige análise de impacto, atualização das regras de negócio, adequação do modelo de dados e testes de integração antes da implementação.
+
+9. A rastreabilidade Forward permite identificar quais componentes do sistema foram desenvolvidos a partir de cada requisito.
+
+Com uma Matriz de Rastreabilidade, a equipe consegue localizar rapidamente classes, tabelas, APIs, testes e commits relacionados à emissão de notas fiscais. Assim, pode avaliar os impactos da nova obrigação, implementar alterações e executar testes direcionados.
+
+Sem rastreabilidade, seria necessário investigar manualmente grande parte do sistema, aumentando o tempo de resposta, o risco de erros e a possibilidade de descumprimento legal. A matriz acelera a adaptação, embora não garanta que ela seja concluída em apenas um dia.
+
+Desafio Sênior – A Crise da Escalabilidade
+
+1. O requisito deve ser reestruturado utilizando processamento assíncrono e arquitetura orientada a eventos.
+
+Novo requisito: Ao finalizar a compra, o sistema deve registrar o pedido com status "Pendente" e encaminhar os eventos para uma fila de processamento. Serviços independentes devem verificar a disponibilidade do estoque, processar o pagamento e enviar a confirmação ao cliente.
+
+O usuário recebe imediatamente o número do pedido e pode acompanhar seu status, sem aguardar todas as operações. O sistema deve utilizar reservas de estoque, controle de concorrência, idempotência e mecanismos de compensação para evitar vendas duplicadas, cobranças indevidas e inconsistências.
+
+2. Cenário BDD – Estoque indisponível após 5 minutos:
+
+DADO que o cliente realizou uma compra
+E o pedido foi registrado com status "Pendente"
+E o processamento assíncrono foi iniciado
+QUANDO o sistema identificar, após 5 minutos, que o produto está indisponível
+ENTÃO o pedido deve ser marcado como "Cancelado por falta de estoque"
+E o sistema deve cancelar a autorização do pagamento ou iniciar o estorno, caso já tenha ocorrido a cobrança
+E o cliente deve receber uma notificação explicando o cancelamento
+E o sistema deve registrar o ocorrido para auditoria.

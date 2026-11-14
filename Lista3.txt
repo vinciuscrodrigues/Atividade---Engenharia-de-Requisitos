@@ -1,0 +1,54 @@
+Lista 03 - Engenharia de Requisitos - HealthLink
+
+1. O projeto falhou por um gap semântico: o desenvolvedor interpretou "prontuário" como um cadastro CRUD, enquanto o médico precisava de uma linha do tempo clínica com alertas de interações medicamentosas. Foi ignorado o primeiro diamante (descobrir e definir o problema), que exige entrevistas contextuais, observação da rotina e validação das necessidades antes de projetar a solução.
+
+2. Shadow IT é o uso de ferramentas ou fluxos tecnológicos fora da governança oficial da organização. Fotografar a tela e enviar pelo WhatsApp pode expor dados sensíveis de saúde, dificultar o controle de acesso, o registro de auditoria e a conformidade com a LGPD. Épico: disponibilizar protocolos e resultados de exames em um portal seguro do paciente, com autenticação, notificações de liberação e compartilhamento controlado, eliminando fotos de telas.
+
+3. O gerente transforma uma crença sobre idosos em fato sem evidências, caracterizando viés de confirmação. O post-it deve ir para Suposições. Para validar, observaria usuários com mais de 70 anos realizando pedidos, aplicaria testes de usabilidade com digitação e voz e faria perguntas abertas, como "Como você costuma pedir medicamentos e quais dificuldades encontra?", sem sugerir preferência pela voz.
+
+4. A pergunta é indutiva porque apresenta uma solução pronta (painel vermelho piscante) e incentiva concordância, contaminando os dados da entrevista. Pergunta investigativa: "Como você identifica medicamentos próximos do vencimento ou vencidos durante o atendimento e o que acontece quando encontra um deles?"
+
+5. Persona Frankenstein é uma persona que mistura comportamentos e necessidades de papéis distintos, prejudicando a modelagem. Médico e auditor financeiro devem ser tratados como perfis de atuação separados. No RBAC, permissões devem ser atribuídas por função e princípio do menor privilégio; se uma pessoa exercer ambas, poderá ter dois papéis autorizados, com segregação de funções, troca explícita de contexto e auditoria. Uma persona híbrida não justifica acesso irrestrito.
+
+6. A experiência depende de toda a jornada, inclusive da entrega física. Oportunidade: permitir autorização antecipada de recebimento por terceiro ou portaria, quando permitido, com confirmação digital de entrega por código de uso único, registro de quem recebeu e notificações ao paciente. A farmácia deve validar requisitos legais específicos de entrega de medicamentos antes de dispensar assinatura física.
+
+7. Os médicos percebem que o app "fecha" porque a sessão expira; ela expira porque o token dura dois minutos; esse prazo não considera as interrupções naturais da rotina clínica. Logo, refatorar o front-end não resolve a causa. RNF: manter uma sessão clínica segura com política de inatividade adequada ao risco, renovação controlada de tokens e desbloqueio rápido por biometria ou PIN institucional, sem expor dados na tela bloqueada. O prazo e os controles devem ser definidos por avaliação de risco e testados em campo.
+
+8. Scope Creep é a ampliação não controlada do escopo acordado; Feature Creep é o acúmulo de funcionalidades extras, frequentemente sem valor comprovado. O caso é principalmente Feature Creep e também pode gerar Scope Creep. O PO deve rejeitar a inclusão imediata porque minigame e NFTs não atendem à necessidade de favoritar farmácias, aumentam custo e complexidade e não apresentam evidência de valor. A ideia só deveria ser reconsiderada após validação e priorização de negócio.
+
+9. A história falha sobretudo em V (Valuable), pois não explicita benefício para usuário ou negócio, e em N (Negotiable), pois impõe uma trigger PostgreSQL como solução. Também é difícil avaliá-la como testável sem critérios de aceitação. Reescrita: COMO responsável pelo estoque, QUERO que as quantidades disponíveis sejam atualizadas após cada venda confirmada, PARA evitar vendas de produtos indisponíveis e manter o inventário confiável. A equipe decide a implementação técnica e define testes de consistência.
+
+10. MVP em duas semanas: COMO farmacêutico responsável, QUERO receber a receita controlada anexada ao pedido e registrar sua conferência manual, PARA aprovar ou recusar a dispensação com segurança e rastreabilidade. Entrega vertical: upload do documento, fila de análise, decisão registrada, status ao paciente e trilha de auditoria. A operação deve respeitar as regras legais vigentes para cada medicamento; funcionalidades como OCR e biometria ficam para etapas posteriores, sem dispensar exigências obrigatórias.
+
+11. O RNF deve ser documentado como critério global e incluído na Definition of Done (DoD): nenhuma história estará concluída sem atender ao limite de carregamento de 1,5 segundo nas condições definidas. A equipe precisa especificar dispositivo, rede, carga simultânea e percentil de medição, automatizar testes de desempenho no pipeline e acompanhar resultados. Exceções devem ser explicitadas e tratadas no backlog, sem depender de um documento extenso.
+
+12. Cenário: Compra de medicamento disponível.
+DADO que o paciente possui um carrinho com produtos disponíveis e atende aos requisitos de compra
+QUANDO confirma o pedido e o pagamento é autorizado
+ENTÃO o sistema registra a compra
+E informa ao paciente o número do pedido e seu status.
+
+13. Cenário 1 - Receita inválida:
+DADO que o paciente anexou um arquivo que não é um PDF válido de receita
+QUANDO solicita a compra do antibiótico
+ENTÃO o sistema não aprova a compra
+E solicita o envio de uma receita válida.
+
+Cenário 2 - Prazo de análise expirado:
+DADO que o paciente anexou uma receita válida em PDF
+E a solicitação aguarda avaliação do farmacêutico
+QUANDO se completam 10 minutos sem aceite
+ENTÃO a compra não é aprovada
+E o sistema informa que a avaliação não foi concluída no prazo.
+
+14. RN-01: Para pedidos de pacientes com idade superior a 65 anos OU classificados como imunossuprimidos, o sistema deve definir a taxa de frete como R$ 0,00 e atribuir prioridade ALTA na fila de processamento. Para os demais pacientes, aplicam-se as regras normais de frete e prioridade. Observação: o código usa idade maior que 65, portanto não inclui pacientes com exatamente 65 anos.
+
+15. O sistema deve registrar o pedido rapidamente com status "Em processamento" e reservar o estoque em operação curta e controlada. Em seguida, publica eventos em uma fila para processamento independente do pagamento, emissão fiscal e notificação por SMS. Serviços consumidores devem ser idempotentes, usar tentativas controladas e compensações em caso de falha, sem manter transações do banco abertas enquanto aguardam APIs externas. A tela mostra o número do pedido e informa que a confirmação será atualizada por status e notificação.
+
+Cenário BDD - Processamento assíncrono:
+DADO que o paciente confirmou um pedido com estoque disponível
+QUANDO o sistema registra o pedido e inicia o processamento assíncrono
+ENTÃO o paciente visualiza o número do pedido e o status "Em processamento"
+E o sistema encaminha pagamento e emissão fiscal para processamento independente
+E, após as confirmações necessárias, atualiza o status para "Confirmado" e envia a notificação
+E, se alguma etapa obrigatória falhar definitivamente, informa a falha e executa as compensações necessárias, como liberar a reserva e cancelar ou estornar a cobrança.

@@ -1,0 +1,39 @@
+Lista 04 - CampusFlow - Matriz CSD e Validação de Hipóteses
+
+ATIVIDADE 1 - O Filtro de Hipóteses
+
+1. Card 1: Suposição. O bloqueio de WebSocket pelo firewall precisa ser confirmado por testes de rede ou pela equipe de infraestrutura; a afirmação isolada não comprova o fato.
+
+2. Card 2: Suposição. A preferência dos alunos por pedir lanches durante a aula ainda não foi comprovada. Deve ser validada por entrevistas contextuais e observação do comportamento real na cantina.
+
+3. Card 3: Dúvida. A quantidade média de alunos após as 21h é desconhecida e exige levantamento de dados de utilização.
+
+4. Card 4: Suposição. A LGPD regula o tratamento e compartilhamento de dados de localização, mas consentimento explícito não é a única base legal possível. É necessário verificar a finalidade, a base legal e a forma de exposição da localização.
+
+5. Card 5: Suposição. Não há evidências de que medalhas digitais aumentem a pontualidade das devoluções. A hipótese pode ser testada com um experimento piloto e comparação das taxas de atraso.
+
+6. Card 6: Dúvida. O limite de espera aceitável por uma carona precisa ser investigado com alunos e dados de comportamento.
+
+7. Card 7: Suposição. A vergonha atribuída aos calouros é uma hipótese comportamental que precisa ser validada em entrevistas sem indução.
+
+ATIVIDADE 2 - Da Matriz para o Campo
+
+1. S1: Conte sobre a última vez que você ofereceu carona a alguém da universidade que não conhecia bem. Como decidiu se levaria essa pessoa?
+
+2. S2: Pense na última vez que deu carona a um colega. O que motivou você a oferecer a viagem?
+
+3. D1: Conte como você combinou sua carona universitária mais recente, desde o primeiro contato até o encontro com o motorista.
+
+4. D2: Conte sobre uma ocasião em que você desistiu de oferecer uma carona pouco antes de sair. O que aconteceu?
+
+ATIVIDADE 3 - Radar de Viés em Pesquisa
+
+1. INDUTIVA (Inadequada). Reescrita: Conte como foi encontrar suas salas de aula no primeiro dia e quais dificuldades você teve.
+
+2. INVESTIGATIVA (Adequada). A pergunta explora uma experiência real e a solução adotada, sem sugerir uma resposta.
+
+3. INDUTIVA (Inadequada). Reescrita: Conte sobre a última vez que enfrentou uma fila na cantina. Como lidou com a espera e já chegou a pagar por alguma alternativa para economizar tempo?
+
+4. INVESTIGATIVA (Adequada). A pergunta investiga o planejamento atual do aluno sem apresentar uma funcionalidade como solução.
+
+5. INDUTIVA (Inadequada). Reescrita: Como você costuma saber que seu lanche está pronto para retirada? Conte sobre a última vez que isso aconteceu.

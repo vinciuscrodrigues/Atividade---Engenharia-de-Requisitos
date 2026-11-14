@@ -1,0 +1,41 @@
+LISTA 06 - SOBREVIVÊNCIA ÁGIL
+Laboratório de User Story Mapping
+
+1. Fatiamento vertical do MVP para a primeira noite:
+Épico | Entrega mínima | Valor
+Abrigo | Construir um abrigo pequeno e fechado antes do anoitecer | Proteção imediata contra monstros.
+Comida | Coletar alimentos suficientes para manter a sobrevivência | Evitar perda de energia e fome.
+Defesa | Produzir uma espada simples de madeira ou pedra | Permitir defesa básica.
+A Release 1 reúne as três necessidades essenciais, em vez de entregar somente uma mansão sem alimentação ou defesa.
+
+2. O WhatsApp disponibiliza a conversa consigo mesmo, conhecida como "Mensagem para você", para guardar mensagens, links, fotos e anotações sem criar grupos artificiais.
+User Story proposta (não é uma transcrição de backlog interno do WhatsApp): COMO usuário do WhatsApp, QUERO enviar mensagens e arquivos para uma conversa comigo mesmo, PARA guardar informações pessoais e recuperá-las quando precisar.
+
+3. Core Value: desenvolver uma experiência jogável de mundo aberto com a missão principal de assalto a banco, incluindo movimentação, interação e execução da missão. Feature Creep: crescimento realista do pelo do cavalo e minijogo de xadrez com NPCs. Essas funcionalidades não são essenciais para validar a experiência principal e aumentam custo, complexidade e risco de atrasar a entrega em um projeto de apenas um ano.
+
+4. Espinha Dorsal, na ordem lógica:
+Baixar o App -> Criar Perfil com Fotos -> Arrastar para a Direita/Esquerda -> Dar Match -> Mandar Mensagem.
+Caminho Triste ou fluxo alternativo: Desfazer o Match. É uma ação posterior e excepcional, não uma etapa obrigatória da jornada principal.
+
+5. Cenário BDD - queda temporária de conexão:
+DADO que o jogador está em uma partida ranqueada em andamento
+E a partida possui seu estado registrado no servidor
+QUANDO a conexão do jogador cair por 3 minutos
+ENTÃO o servidor deve preservar o estado da partida e registrar a desconexão
+E permitir a reconexão do jogador à mesma partida, se ela ainda estiver ativa
+E aplicar as regras de penalidade conforme a duração, recorrência e critérios de abandono definidos pelo jogo, sem punir automaticamente toda desconexão como abandono intencional.
+
+6. O Gap Semântico ocorre quando a equipe interpreta a solicitação sem investigar a necessidade real do usuário. No primeiro diamante do Design Thinking, deveria descobrir e definir o problema antes de propor soluções. Ao pular essa validação, construiu uma solução complexa e inadequada para uma necessidade simples.
+
+7. O fatiamento horizontal entrega banco, API e interface separadamente, sem permitir que o usuário valide o fluxo completo até a terceira Sprint. Isso posterga o feedback e aumenta o risco de investir em uma solução inadequada.
+Entrega vertical da Sprint 1: uma tela simples para informar uma chave PIX e um valor, integrada a uma API e ao banco de dados, que permita iniciar e confirmar uma transferência em ambiente de homologação ou sandbox, com autenticação e validações básicas. Assim, o fluxo completo pode ser testado sem depender da implementação de todas as funcionalidades futuras.
+
+8. A equipe esqueceu a dor de incerteza sobre o tamanho identificada no Discovery.
+Novo Épico: Escolher tamanho com confiança, inserido entre Vitrine e Carrinho.
+User Story: COMO cliente de uma loja de roupas, QUERO consultar as medidas reais de cada tamanho para a peça e compará-las com minhas medidas, PARA escolher o tamanho adequado antes de comprar.
+MVP: tabela de medidas específica por produto ou marca, acessível na página da roupa, antes da adição ao carrinho.
+
+9. A equipe entregou componentes isolados, não um resultado utilizável. User Story Mapping exige incrementos verticais que resolvam uma necessidade real e permitam feedback.
+Na Sprint 1, deveria entregar uma solução mínima de deslocamento funcional e segura para teste, como um patinete convencional completo, com plataforma, rodas, guidão e freio. A motorização elétrica poderia ser incorporada nas próximas iterações, após validar a utilidade e a experiência básica.
+
+10. Sprint 1 - Walking Skeleton: disponibilizar uma interface simples para selecionar uma especialidade, um horário disponível e confirmar o agendamento de consulta. O front-end deve enviar a solicitação a uma API, que verifica a disponibilidade e grava a consulta no banco de dados, retornando a confirmação ao usuário. Devem existir testes do fluxo ponta a ponta e proteção básica contra agendamentos duplicados. A IA por voz e a capacidade para 50.000 acessos simultâneos ficam para etapas posteriores, sem serem ignoradas no planejamento arquitetural.

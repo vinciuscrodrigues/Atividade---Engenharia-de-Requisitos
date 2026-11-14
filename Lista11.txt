@@ -1,0 +1,88 @@
+Lista 11 - Engenharia de Requisitos
+
+1. Alternativa B. O Kanban prioriza o fluxo puxado e limita o trabalho em progresso (WIP), permitindo concluir atividades antes de iniciar outras e facilitando o tratamento de bloqueios sem depender de sprints com duração fixa.
+
+2. Pela Lei de Little, Lead Time = WIP / Throughput.
+   a) Situação atual: 20 / 4 = 5 semanas.
+   b) Com WIP limitado a 8 e vazão mantida em 4 histórias por semana: 8 / 4 = 2 semanas.
+   c) Se forem iniciadas mais 8 histórias, o WIP passará a 28 e, com a mesma vazão, o Lead Time será 28 / 4 = 7 semanas. A troca frequente de contexto entre tarefas aumenta interrupções, retrabalho e tempo de retomada, podendo até reduzir a vazão e elevar ainda mais o Lead Time. Os cálculos pressupõem um fluxo estável e vazão constante.
+
+3. Alternativa B. No Jira, a US-102 deve possuir o vínculo "is blocked by" com a US-089, pois a homologação da refatoração é pré-requisito para iniciar o pagamento com dois cartões.
+
+4. Definition of Ready (DoR):
+   1) A história deve conter regras documentadas e aprovadas para emissão do boleto híbrido, geração do QR Code Pix, vencimento, valores e tratamento de pagamentos.
+   2) Os critérios de aceitação devem incluir cenários BDD verificáveis para pagamento por boleto, pagamento por Pix, expiração e tentativa de pagamento duplicado.
+   3) Dependências de APIs, ambiente de homologação, contratos de integração e regras de conciliação devem estar identificadas e validadas pelos responsáveis.
+   Definition of Done (DoD):
+   1) Testes automatizados de emissão, pagamento, baixa e conciliação devem passar no pipeline de integração contínua, sem falhas bloqueantes.
+   2) Testes de integração em homologação devem confirmar a conciliação correta dos pagamentos por boleto e Pix e a prevenção de baixa duplicada.
+   3) A alteração deve passar por revisão de código, verificações de segurança e homologação dos critérios de aceitação, sem defeitos críticos ou altos pendentes, com evidências registradas no Jira.
+
+5. a) Dois desperdícios Lean são o processamento excessivo, pela produção de um SRS de 420 páginas sem validação prática, e o trabalho parcialmente concluído/estoque de conhecimento não validado, pois quatro meses de documentação acumularam regras que perderam valor antes da implementação. A ausência de feedback dos operadores também gerou retrabalho.
+   b) Duas práticas de XP seriam desenvolvimento orientado a testes (TDD), criando testes automatizados para regras de crédito e facilitando mudanças regulatórias com segurança, e pequenas entregas frequentes, permitindo validar incrementos funcionais com operadores antes de investir meses em especificações incorretas. Essas práticas reduzem o impacto, embora não eliminem mudanças externas.
+
+6. Alternativa B. Pela regra 60-20-20 apresentada no exercício, 60% da capacidade deve ser reservada aos requisitos Must Have, 20% aos Should Have e 20% aos Could Have ou margem negociável, mantendo os Won't Have fora da entrega atual.
+
+DESAFIO EXTRA - DESCOBRIR A PALAVRA-CHAVE DO COFRE
+
+O gabarito está no HTML original e pode ser aberto nele após inserir a palavra-chave. O script abaixo procura a senha, testa a autenticação AES-GCM e mostra apenas a palavra-chave, sem extrair ou salvar o gabarito.
+
+Instalação: pip install cryptography
+Coloque o script na mesma pasta de LISTA_EXERCICIOS_SEMANA_11_INTERATIVA.html.
+Execução: python descobrir_senha11.py
+
+SCRIPT PYTHON:
+
+from pathlib import Path
+from html.parser import HTMLParser
+import base64
+import hashlib
+from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+
+class LeitorPayload(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.dados = None
+
+    def handle_starttag(self, tag, attrs):
+        atributos = dict(attrs)
+        if atributos.get("id") == "encrypted-payload":
+            self.dados = atributos
+
+arquivo = Path(__file__).resolve().parent / "LISTA_EXERCICIOS_SEMANA_11_INTERATIVA.html"
+leitor = LeitorPayload()
+leitor.feed(arquivo.read_text(encoding="utf-8"))
+if not leitor.dados:
+    raise RuntimeError("Elemento encrypted-payload não encontrado")
+
+iv = base64.b64decode(leitor.dados["data-iv"])
+cifrado = base64.b64decode(leitor.dados["data-ct"])
+
+# Dica da lista: 7 letras minúsculas, começa com g e termina com n.
+# Wordlist de conceitos relevantes; novas palavras podem ser acrescentadas.
+candidatas = ["gherkin", "gestaon", "gatewayn", "gitflow", "kanban", "governance"]
+
+senha_encontrada = None
+for candidata in candidatas:
+    if len(candidata) != 7 or not candidata.startswith("g") or not candidata.endswith("n"):
+        continue
+    chave = hashlib.sha256(candidata.encode("utf-8")).digest()
+    try:
+        AESGCM(chave).decrypt(iv, cifrado, None)
+    except Exception:
+        continue
+    senha_encontrada = candidata
+    break
+
+if senha_encontrada:
+    print("Palavra-chave:", senha_encontrada)
+    print("Validação criptográfica: sucesso")
+    print("Insira a palavra-chave no cofre do HTML para visualizar o gabarito.")
+else:
+    print("Nenhuma candidata validada. Amplie a lista de palavras.")
+
+RESULTADO DA EXECUÇÃO:
+
+Palavra-chave: gherkin
+Validação criptográfica: sucesso
+Insira a palavra-chave no cofre do HTML para visualizar o gabarito.

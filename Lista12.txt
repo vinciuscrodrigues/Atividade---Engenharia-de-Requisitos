@@ -1,0 +1,103 @@
+LISTA 12 - ENGENHARIA DE REQUISITOS
+
+1. Alternativa A. O protótipo de baixa fidelidade permite validar regras conceituais, necessidades e fluxos operacionais com os usuários antes da codificação, reduzindo retrabalho e desperdício.
+
+2. R-01: Verificabilidade. Termos como "ultraveloz" e "extremamente intuitiva" não apresentam métricas objetivas que permitam testar o requisito.
+R-02: Consistência. O limite de 1.500 mg na prescrição contradiz a autorização de 3.000 mg no módulo de farmácia.
+R-03: Realismo. A previsão de parada cardiorrespiratória com 100% de precisão antes de sintomas é tecnicamente inviável, especialmente com o hardware proposto.
+R-04: Completude. Faltam formatos aceitos, limites de tamanho e tratamento de falhas de rede durante o envio dos exames.
+R-05: Validade. A emissão de relatórios tributários não atende ao objetivo clínico do sistema e duplica uma função já executada pelo ERP do hospital.
+
+3. Alternativa B. As regras são inconsistentes porque uma exige o limite noturno de R$ 1.000,00 conforme o horário da liquidação, enquanto a outra permite o limite diurno de R$ 5.000,00 conforme o horário em que o Pix foi agendado.
+
+4. Papéis na inspeção formal de Fagan:
+Autor: produz o documento, esclarece dúvidas e corrige os defeitos identificados após a inspeção.
+Moderador: conduz a sessão, controla o processo e mantém o foco na identificação de defeitos, evitando debates sobre soluções.
+Inspetor/Revisor: examina previamente a especificação e identifica ambiguidades, omissões, contradições e outros problemas.
+Relator: registra os defeitos encontrados, sua localização, classificação e severidade.
+
+Checklist de inspeção:
+1) Os termos utilizados são claros, padronizados e livres de ambiguidades?
+2) Os fluxos principais, alternativos e de exceção estão completamente especificados?
+3) Os critérios de aceitação permitem testes objetivos com resultados verificáveis?
+4) Cada requisito é rastreável a uma necessidade de negócio e não contradiz outros requisitos?
+
+5. Funcionalidade: Pix Agendado com Limite Noturno
+Contexto:
+Dado que o período noturno é das 20:00 às 06:00
+E que o limite noturno é de R$ 1.000,00
+E que o limite geral diurno é de R$ 5.000,00
+
+Cenário 1: Caminho feliz - Pix diurno com saldo suficiente
+Dado que o cliente possui R$ 3.000,00 de saldo
+Quando agenda um Pix de R$ 1.500,00 para as 14:00 do dia 25/11/2026
+E chega o horário de liquidação
+Então o sistema debita R$ 1.500,00
+E registra a transferência como concluída
+E disponibiliza o comprovante.
+
+Cenário 2: Fluxo alternativo - Pix noturno dentro do limite
+Dado que o cliente possui R$ 2.000,00 de saldo
+Quando agenda um Pix de R$ 800,00 para as 22:30 do dia 25/11/2026
+E chega o horário de liquidação
+Então o sistema debita R$ 800,00
+E registra o consumo de R$ 800,00 do limite noturno.
+
+Cenário 3: Exceção - Pix noturno acima do limite
+Dado que o cliente pretende agendar um Pix de R$ 1.500,00 para as 21:00
+Quando confirma a solicitação
+Então o sistema rejeita o agendamento
+E informa que o valor excede o limite noturno de R$ 1.000,00
+E não realiza débito nem reserva de saldo.
+
+Cenário 4: Resiliência - Saldo insuficiente na liquidação
+Dado que existe um Pix de R$ 400,00 agendado para as 10:00
+E que o saldo disponível no horário da execução é de R$ 50,00
+Quando o sistema tenta liquidar o Pix
+Então a transferência não é realizada
+E o agendamento recebe o status de falha por saldo insuficiente
+E o cliente recebe uma notificação informando a falha.
+
+6. Alternativa B. O custo de corrigir defeitos tende a crescer de forma acentuada conforme o projeto avança, podendo ser muito maior em produção do que na fase de requisitos. No simulador da lista, um reparo de R$ 500,00 na validação passa a R$ 5.000,00 no desenvolvimento, R$ 12.500,00 no UAT e R$ 50.000,00 na produção, considerando os multiplicadores de 1x, 10x, 25x e 100x.
+
+----------------------------------------
+SCRIPT PYTHON - DESCOBRIR A PALAVRA-CHAVE
+----------------------------------------
+
+# Instalar dependencias: pip install cryptography beautifulsoup4
+# Coloque este script na mesma pasta do HTML da Lista 12.
+from pathlib import Path
+from bs4 import BeautifulSoup
+from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+from cryptography.exceptions import InvalidTag
+import base64
+import hashlib
+
+arquivo = Path("LISTA_EXERCICIOS_SEMANA_12_INTERATIVA.html")
+soup = BeautifulSoup(arquivo.read_text(encoding="utf-8"), "html.parser")
+payload = soup.select_one("#encrypted-payload")
+iv = base64.b64decode(payload["data-iv"])
+ciphertext = base64.b64decode(payload["data-ct"])
+salt = "unicesumar-er-2026"
+wordlist = ["sommerville", "fagan", "boehm", "pressman", "wireframe",
+            "prototipo", "smoketest", "validacao", "uat"]
+
+for termo in wordlist:
+    chave = hashlib.sha256((termo.strip().lower() + ":" + salt).encode("utf-8")).digest()
+    try:
+        AESGCM(chave).decrypt(iv, ciphertext, None)
+    except InvalidTag:
+        continue
+    print("Palavra-chave encontrada:", termo)
+    print("Descriptografia validada com sucesso.")
+    break
+else:
+    print("Nenhuma palavra da lista conseguiu desbloquear o cofre.")
+
+RESULTADO DA EXECUCAO
+Palavra-chave encontrada: sommerville
+Descriptografia validada com sucesso.
+
+Para visualizar o gabarito oficial, abra o arquivo HTML original,
+digite sommerville no campo do cofre e clique em Desbloquear Gabarito.
+O gabarito descriptografado nao foi incluido neste TXT.

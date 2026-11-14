@@ -1,0 +1,52 @@
+LISTA 07 - ESPECIFICAÇÃO ÁGIL E INVEST - ENGENHARIA DE REQUISITOS
+
+1. Alternativa B. O fatiamento é horizontal, pois separa infraestrutura, API e interface em entregas distintas. Isso impede testar o fluxo completo e entregar valor de negócio nas primeiras releases, aproximando o projeto de um modelo Cascata disfarçado.
+
+2. Alternativa C. É uma falsa User Story técnica, centrada em uma trigger e na tabela do banco. Fere Valuable, pois não expressa claramente valor para uma pessoa, e Negotiable, pois determina a implementação. A regra de vencimento deve ser explicitada como requisito de negócio e a trigger, se escolhida, registrada como tarefa técnica.
+
+3. Alternativa A. Legibilidade, tamanho de fonte e contraste são requisitos não funcionais transversais de acessibilidade e usabilidade. Devem constar nos critérios globais da Definition of Done, com verificações em condições reais de uso, para que cada entrega respeite a necessidade identificada no Discovery.
+
+4. Primeiro erro: colocar "Esquecer a Senha" na espinha dorsal, embora seja um fluxo de exceção ou recuperação de acesso, e não uma etapa obrigatória da jornada principal. Segundo erro: incluir "Pedir Estorno da Compra", outra exceção que só ocorre em situações específicas. Eixo corrigido: [Acessar conta] -> [Buscar/Selecionar exame] -> [Escolher data e horário] -> [Confirmar agendamento] -> [Pagar exame] -> [Receber confirmação]. Recuperação de senha e estorno ficam abaixo da espinha dorsal, como caminhos alternativos.
+
+5. Pergunta sobre Estimable: "Quais campos, regras de cálculo, fontes de dados e formato de arquivo o relatório de repasses deve conter?" Sem isso, não é possível estimar o esforço com confiança. Pergunta sobre Negotiable: "O envio à auditoria precisa obrigatoriamente ocorrer por arquivo ou podemos avaliar acesso seguro a um relatório online ou integração?" A resposta permite negociar a solução sem perder o objetivo de negócio.
+
+6. A história mistura necessidade do médico com detalhes de interface e infraestrutura, como ícone de disquete, posição na tela, HTML e MySQL. Isso limita alternativas de implementação e impede a equipe de propor soluções melhores, como salvamento automático. História corrigida: "Como médico plantonista, quero registrar e recuperar com segurança o diagnóstico do paciente, para que as informações clínicas permaneçam disponíveis mesmo após interrupções inesperadas."
+
+7. A regra de mascaramento de CPF deve ser registrada como requisito transversal de privacidade e segurança, com padrão de exibição definido e critérios verificáveis na Definition of Done (DoD). Toda história que exiba CPF deve atender a esse checklist e ter testes automatizados de interface/API quando aplicável. Não são necessárias 50 histórias iguais. É importante diferenciar mascaramento em tela de anonimização irreversível e prever exceções de acesso autorizadas, caso existam.
+
+8. O PO erra ao tentar transformar uma investigação tecnológica em User Story com "Como sistema", sem usuário nem valor de negócio diretamente demonstrável. O item correto no Jira é um Spike técnico, limitado a quatro dias, para comparar as três bibliotecas, criar provas de conceito e registrar resultados e recomendação. A pesquisa é necessária porque a incerteza impede estimar adequadamente a história funcional, afetando o critério Estimable do INVEST.
+
+9. MVP (Release 1, cinco dias): "Como coordenador da UTI, quero visualizar a quantidade atual de leitos ocupados e disponíveis, para avaliar rapidamente a capacidade de atendimento e negociar vagas." A entrega vertical inclui consulta aos dados existentes, cálculo simples e apresentação em uma tela funcional, com testes. A IA e a previsão baseada em 5.000 históricos são retiradas porque exigem dados preparados, validação de modelo e maior esforço; o painel básico já entrega valor verificável.
+
+10. Conversation é o diálogo entre PO, usuários e desenvolvedores para esclarecer objetivo, regras, exceções e alternativas da história. Confirmation é a definição objetiva de como verificar que o comportamento esperado foi entregue. Ela se materializa em critérios de aceite e exemplos testáveis, frequentemente escritos em BDD/Gherkin (DADO, QUANDO, ENTÃO), que orientam implementação, testes e aceite.
+
+DESAFIO EXTRA - GABARITO CRIPTOGRAFADO
+
+O PDF também propõe criar um script Python para testar as 1.296 senhas no padrão re__ e revelar um link cifrado com AES-256-CBC, PBKDF2 e 1.000 iterações. Abaixo está uma implementação de referência para executar localmente (requer OpenSSL instalado):
+
+import base64
+import itertools
+import string
+import subprocess
+
+cifrado = (
+    "U2FsdGVkX189CvKETNa+k2wHIMpbCwNk7HKB3nBRzOD9bBaPt2nFMCdElvKoRfTm"
+    "mqVv41Trh37ORXFWRVNOX3vpgPHULkkaoyh9DfmzrGBXkGnu/SJfQkGuU08zbgMQ"
+    "NSwCGTwoIHkUMzRFQELN0Q=="
+)
+dados = base64.b64decode(cifrado)
+alfabeto = string.ascii_lowercase + string.digits
+for a, b in itertools.product(alfabeto, repeat=2):
+    senha = "re" + a + b
+    resultado = subprocess.run(
+        ["openssl", "enc", "-aes-256-cbc", "-d", "-pbkdf2", "-iter", "1000", "-pass", f"pass:{senha}"],
+        input=dados, capture_output=True
+    )
+    if resultado.returncode == 0:
+        texto = resultado.stdout.decode("utf-8", errors="replace")
+        if texto.startswith(("http://", "https://")):
+            print("Senha:", senha)
+            print("Link:", texto)
+            break
+else:
+    print("Nenhum link válido encontrado nas combinações testadas.")

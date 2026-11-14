@@ -1,0 +1,30 @@
+LISTA 09 - GESTÃO DE MUDANÇAS E QUALIDADE DE REQUISITOS
+
+1. A volatilidade é V = (12 + 8 + 4) / 80 × 100 = 30%. O projeto está no limite crítico de 30%, muito acima do patamar de estabilidade de 10%. A equipe deve reavaliar prioridades, reforçar a análise de impacto, manter rastreabilidade e adotar uma arquitetura modular que acomode mudanças. O indicador isolado não prova fracasso: as 12 inclusões regulatórias, por exemplo, são mudanças necessárias.
+
+2. Na engenharia civil, características físicas e normas tendem a ser definidas antes da construção, e alterações estruturais posteriores costumam ser caras. No software, regras de negócio, legislação, concorrência e necessidades dos usuários evoluem continuamente. Entrevistas, personas e Matriz CSD reduzem incertezas iniciais, mas não eliminam mudanças futuras. Uma boa elicitação identifica necessidades conhecidas e estabelece mecanismos para validar novas descobertas.
+
+3. Na fase de Discovery, custo relativo de 1×: basta corrigir a regra documentada e validar com o financeiro antes de programar. No desenvolvimento, custo ilustrativo de 10×: é necessário alterar classes de domínio, cálculos e testes, além de revisar dependências. Na produção, custo ilustrativo de 100×: pode ser preciso corrigir transações, recalcular juros, ressarcir clientes, auditar dados e realizar uma implantação emergencial. Os fatores 1×, 10× e 100× são referências didáticas da Curva de Boehm, não multiplicadores garantidos para todo projeto.
+
+4. Classificação na ordem apresentada:
+1) Externo: nova portaria da Receita Federal.
+2) Interno: descoberta de necessidade ao testar o protótipo.
+3) Externo: pressão competitiva que motiva mudanças no produto, embora a escolha do framework seja interna.
+4) Interno: revisão da viabilidade econômica e da arquitetura após identificar o custo real da API de terceiros.
+
+5. Baseline é uma versão formalmente aprovada e identificada dos requisitos, usada como referência para desenvolvimento, testes e controle de configuração. Ela não impede mudanças: exige que alterações posteriores sejam registradas, analisadas, aprovadas e rastreadas. Isso evita scope creep, isto é, crescimento informal do escopo sem avaliação de impacto.
+
+6. O desenvolvedor não deve implementar o campo diretamente porque uma alteração aparentemente simples pode afetar banco de dados, validações, integrações, privacidade de dados pessoais, testes e prazo. Deve registrar a solicitação e encaminhá-la ao processo de mudanças. O CCB (Change Control Board) é o comitê responsável por avaliar, aprovar, rejeitar ou adiar mudanças. Sua composição depende do projeto e pode incluir Product Owner, gerente de projeto, arquiteto ou líder técnico, QA, representantes do negócio e segurança/privacidade quando necessário. O comitê avalia benefício, riscos, custo, prazo e impacto antes de autorizar a alteração.
+
+7. Numeração das etapas na ordem em que aparecem no enunciado:
+2) Análise de Impacto Técnico.
+5) Atualização da Baseline e Rastreabilidade.
+3) Estimativa de Esforço, Custo e Prazo.
+1) Registro Formal da Solicitação.
+4) Deliberação do CCB.
+
+8. A mudança exige atualizar a regra de negócio e a User Story US-014, definindo que o frete grátis vale somente para a Região Sul quando o valor da compra for superior a R$ 250 e o peso total for inferior a 5 kg. O engenheiro deve verificar de onde vêm região, valor e peso; mapear dependências da classe FreteCalculator, APIs, checkout, carrinho, cálculo de frete e eventuais promoções. Deve atualizar os cenários BDD para os limites de R$ 250 e 5 kg, regiões fora do Sul e combinações de condições, incluindo regressão dos cálculos pagos. Por fim, estimar esforço, obter aprovação, atualizar a rastreabilidade Regra → US-014 → Código → Testes e validar o comportamento em ambiente de testes antes da publicação.
+
+9. O prompt falhou por ser vago: não define papel, critérios objetivos, formato de saída nem exige identificação de falhas e exceções. Prompt reescrito: "Atue como auditor sênior de Engenharia de Requisitos. Analise criticamente cada User Story fornecida, sem elogios automáticos. Avalie separadamente os critérios INVEST (Independent, Negotiable, Valuable, Estimable, Small e Testable), identifique ambiguidades, prescrições de interface ou tecnologia, ausência de valor ao usuário e dependências. Verifique regras de negócio, critérios de aceite, caminhos felizes, caminhos tristes e exceções como dados inválidos, indisponibilidade e concorrência. Para cada história, apresente: problemas encontrados, gravidade, perguntas pendentes ao PO, versão reescrita em Como/Quero/Para que e cenários BDD Dado/Quando/Então. Não invente regras ausentes: sinalize-as como dúvidas a validar."
+
+10. Três erros: (1) "sistema" não representa um usuário ou papel humano com necessidade; (2) "fazer um CRUD" descreve operação técnica, não objetivo de negócio; (3) citar TB_CLIENTES e Oracle fixa detalhes de implementação sem explicar o benefício. User Story corrigida: "Como atendente de cadastro, quero registrar e atualizar os dados dos clientes para manter suas informações corretas e disponíveis durante o atendimento." Critérios de aceite e permissões devem ser detalhados posteriormente com o Product Owner.
